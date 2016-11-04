@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
+    defaultConfig {
+        applicationId "io.github.dmitrikudrenko.kebab"
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    kapt {
+        generateStubs = true
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile "com.android.support:appcompat-v7:$androidSupportLibraryVersion"
+    compile "com.android.support:design:$androidSupportLibraryVersion"
+    compile 'com.google.android.gms:play-services-maps:9.8.0'
+
+    kapt 'com.google.guava:guava:19.0'
+    kapt 'com.android.databinding:compiler:2.1.2'
+    kapt 'com.google.dagger:dagger-compiler:2.7'
+    compile 'com.google.dagger:dagger:2.7'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.google.code.gson:gson:2.8.0'
+
+    testCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}

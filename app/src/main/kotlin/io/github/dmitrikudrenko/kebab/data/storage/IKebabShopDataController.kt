@@ -5,4 +5,5 @@ import rx.Observable
 
 interface IKebabShopDataController {
     fun getKebabShops(): Observable<List<IKebabShop>>
+    fun getKebabShop(id: Long): Observable<IKebabShop>
 }

@@ -21,13 +21,17 @@ class KebabShopsListFragment : Fragment() {
     private var kebabShopsAdapter: KebabShopsAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.f_kebab_shops_list, container)
+        val view = inflater?.inflate(R.layout.f_kebab_shops_list, container, false)
+        injectViews(view)
+        KebabApplication.graph.inject(this)
+        return view
+    }
+
+    private fun injectViews(view: View?) {
         recyclerView = view?.findViewById(R.id.recycler_view) as RecyclerView?
         recyclerView?.layoutManager = LinearLayoutManager(context)
         kebabShopsAdapter = KebabShopsAdapter()
         recyclerView?.adapter = kebabShopsAdapter
-        KebabApplication.graph.inject(this)
-        return view
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

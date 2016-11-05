@@ -30,6 +30,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.list.KebabShopsListActivity" />
+        <activity android:name=".ui.shop.KebabShopActivity" />
     </application>
 
 </manifest>

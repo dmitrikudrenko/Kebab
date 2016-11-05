@@ -1,5 +1,6 @@
 package io.github.dmitrikudrenko.kebab.ui.map
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +12,7 @@ import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.internal.PositionStorage
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
+import io.github.dmitrikudrenko.kebab.ui.shop.KebabShopActivity
 import javax.inject.Inject
 
 class KebabShopsMapActivity : AppCompatActivity(), OnShopSelectedListener, OnOutsideClickListener {
@@ -38,7 +40,7 @@ class KebabShopsMapActivity : AppCompatActivity(), OnShopSelectedListener, OnOut
         content = findViewById(R.id.content) as ViewGroup?
         if (savedInstanceState == null) {
             fragment = KebabShopsMapFragment()
-            fragment?.setPosition(positionStorage?.restorePosition())
+            fragment?.setPosition(positionStorage.restorePosition())
             supportFragmentManager.beginTransaction()
                     .replace(R.id.content, fragment, TAG)
                     .commitNow()
@@ -56,6 +58,7 @@ class KebabShopsMapActivity : AppCompatActivity(), OnShopSelectedListener, OnOut
         bottomSheetBehaviour?.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomViewTextName?.text = shop.getName()
         bottomViewTextAddress?.text = shop.getAddress()
+        startActivity(Intent(this, KebabShopActivity::class.java).putExtra("id", shop.getId()))
         return true
     }
 

@@ -4,6 +4,7 @@ import dagger.Component
 import io.github.dmitrikudrenko.kebab.ui.list.KebabShopsListFragment
 import io.github.dmitrikudrenko.kebab.ui.map.KebabShopsMapActivity
 import io.github.dmitrikudrenko.kebab.ui.map.KebabShopsMapFragment
+import io.github.dmitrikudrenko.kebab.ui.shop.KebabShopFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -12,4 +13,5 @@ interface ApplicationComponent {
     fun inject(fragment: KebabShopsListFragment)
     fun inject(fragment: KebabShopsMapFragment)
     fun inject(activity: KebabShopsMapActivity)
+    fun inject(fragment: KebabShopFragment)
 }

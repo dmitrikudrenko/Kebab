@@ -1,6 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 project.ext {
+    androidKeystoreAlias = properties.getProperty('androidKeystoreAlias')
+    androidKeystorePassword = properties.getProperty('androidKeystorePassword')
+
     androidCompileSdkVersion = 25
     androidBuildToolsVersion = "24.0.2"
 

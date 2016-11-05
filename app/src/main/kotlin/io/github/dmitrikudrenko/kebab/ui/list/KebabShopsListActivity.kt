@@ -11,7 +11,7 @@ class KebabShopsListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.a_kebab_content)
+        setContentView(R.layout.a_kebab_list)
         injectViews(savedInstanceState)
     }
 

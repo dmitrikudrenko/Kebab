@@ -28,6 +28,20 @@ android {
     dataBinding {
         enabled = true
     }
+    signingConfigs {
+        debug {
+            storeFile file("keystore.keystore")
+            storePassword androidKeystorePassword
+            keyAlias androidKeystoreAlias
+            keyPassword androidKeystorePassword
+        }
+        release {
+            storeFile file("keystore.keystore")
+            storePassword androidKeystorePassword
+            keyAlias androidKeystoreAlias
+            keyPassword androidKeystorePassword
+        }
+    }
 }
 
 dependencies {
@@ -48,6 +62,7 @@ dependencies {
 
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

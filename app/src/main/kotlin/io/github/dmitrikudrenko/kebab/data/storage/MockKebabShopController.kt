@@ -9,10 +9,19 @@ import rx.Observable
 import java.io.InputStreamReader
 
 class MockKebabShopController(private val context: Context) : IKebabShopDataController {
+    private var cache: List<IKebabShop>? = null
+
     override fun getKebabShops(): Observable<List<IKebabShop>> {
-        val inputStream = context.assets.open("kebabShops.json")
-        val gson = GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create()
-        val shops = gson.fromJson(InputStreamReader(inputStream), Array<KebabShop>::class.java)
-        return Observable.just(shops.asList())
+        if (cache == null) {
+            val inputStream = context.assets.open("kebabShops.json")
+            val gson = GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create()
+            val shops = gson.fromJson(InputStreamReader(inputStream), Array<KebabShop>::class.java)
+            cache = shops.asList()
+        }
+        return Observable.just(cache)
+    }
+
+    override fun getKebabShop(id: Long): Observable<IKebabShop> {
+        return Observable.just(cache?.find { it.getId() == id })
     }
 }

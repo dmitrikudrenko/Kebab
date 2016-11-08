@@ -18,7 +18,7 @@ class KebabShopsListFragment : Fragment() {
     lateinit var kebabShopDataController: IKebabShopDataController
 
     private var recyclerView: RecyclerView? = null
-    private var kebabShopsAdapter: KebabShopsAdapter? = null
+    private val kebabListPresenter = KebabListPresenter()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.f_kebab_shops_list, container, false)
@@ -30,15 +30,17 @@ class KebabShopsListFragment : Fragment() {
     private fun injectViews(view: View?) {
         recyclerView = view?.findViewById(R.id.recycler_view) as RecyclerView?
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        kebabShopsAdapter = KebabShopsAdapter()
-        recyclerView?.adapter = kebabShopsAdapter
+        recyclerView?.adapter = KebabShopsAdapter(kebabListPresenter)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         kebabShopDataController.getKebabShops()
                 .subscribe(
-                        { kebabShopsAdapter?.notifyDataSetChanged(it) },
+                        {
+                            kebabListPresenter.onDataChanged(it)
+                            recyclerView?.adapter?.notifyDataSetChanged()
+                        },
                         { Log.e("Data loading", it.message, it) }
                 )
     }

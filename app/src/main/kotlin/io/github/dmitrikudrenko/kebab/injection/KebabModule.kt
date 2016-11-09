@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import io.github.dmitrikudrenko.kebab.KebabApplication
+import io.github.dmitrikudrenko.kebab.analytics.AnalyticsReporter
+import io.github.dmitrikudrenko.kebab.analytics.FirebaseAnalyticsReporter
 import io.github.dmitrikudrenko.kebab.crash.CrashReporter
 import io.github.dmitrikudrenko.kebab.crash.FirebaseCrashReporter
 import io.github.dmitrikudrenko.kebab.data.internal.InternalSharedPreferences
@@ -43,5 +45,11 @@ open class KebabModule(private val application: KebabApplication) {
     @Singleton
     fun provideCrashReporter(): CrashReporter {
         return FirebaseCrashReporter()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAnalyticsReporter(context: Context): AnalyticsReporter {
+        return FirebaseAnalyticsReporter(context)
     }
 }

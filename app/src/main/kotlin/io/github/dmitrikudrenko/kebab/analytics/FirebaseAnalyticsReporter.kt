@@ -3,10 +3,9 @@ package io.github.dmitrikudrenko.kebab.analytics
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import javax.inject.Inject
 
 
-class FirebaseAnalyticsReporter @Inject constructor(context: Context) : AnalyticsReporter {
+class FirebaseAnalyticsReporter(context: Context) : AnalyticsReporter {
     private val instance: FirebaseAnalytics
 
     init {

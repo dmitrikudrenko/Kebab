@@ -49,7 +49,7 @@ open class KebabModule(private val application: KebabApplication) {
 
     @Provides
     @Singleton
-    fun provideAnalyticsReporter(context: Context): AnalyticsReporter {
-        return FirebaseAnalyticsReporter(context)
+    fun provideAnalyticsReporter(): AnalyticsReporter {
+        return FirebaseAnalyticsReporter(application)
     }
 }

@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentActivity
 
 
 interface IView {
-    fun showProgressDialog()
-    fun hideProgressDialog()
+    fun showProgressDialog() = true
+    fun hideProgressDialog() = true
     fun getActivity(): FragmentActivity
 }

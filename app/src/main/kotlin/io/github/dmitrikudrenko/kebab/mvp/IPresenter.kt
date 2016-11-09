@@ -1,7 +1,8 @@
 package io.github.dmitrikudrenko.kebab.mvp
 
 
-interface IPresenter {
-    fun onStart()
-    fun onStop()
+interface IPresenter<in View: IView> {
+    fun init(view: View)
+    fun onStart() = true
+    fun onStop() = true
 }

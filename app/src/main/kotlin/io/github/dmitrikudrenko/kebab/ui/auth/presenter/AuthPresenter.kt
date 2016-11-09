@@ -5,8 +5,7 @@ import io.github.dmitrikudrenko.kebab.mvp.IPresenter
 import io.github.dmitrikudrenko.kebab.ui.auth.view.AuthView
 
 
-interface AuthPresenter : IPresenter {
-    fun init(view: AuthView)
+interface AuthPresenter : IPresenter<AuthView> {
     fun onSignInClick()
     fun onSignOutClick()
     fun onGoogleSignedIn(data: Intent?)

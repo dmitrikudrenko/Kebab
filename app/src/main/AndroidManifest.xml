@@ -33,6 +33,8 @@
 
         <activity android:name=".ui.list.KebabShopsListActivity" />
         <activity android:name=".ui.shop.KebabShopActivity" />
+
+        <activity android:name=".ui.auth.SplashActivity" />
     </application>
 
 </manifest>

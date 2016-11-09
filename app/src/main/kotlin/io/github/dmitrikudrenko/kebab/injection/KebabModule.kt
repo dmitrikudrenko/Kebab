@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import io.github.dmitrikudrenko.kebab.KebabApplication
+import io.github.dmitrikudrenko.kebab.crash.CrashReporter
+import io.github.dmitrikudrenko.kebab.crash.FirebaseCrashReporter
 import io.github.dmitrikudrenko.kebab.data.internal.InternalSharedPreferences
 import io.github.dmitrikudrenko.kebab.data.internal.PositionStorage
 import io.github.dmitrikudrenko.kebab.data.storage.IKebabShopDataController
@@ -35,5 +37,11 @@ open class KebabModule(private val application: KebabApplication) {
     @Singleton
     fun providePositionStorage(sharedPreferences: SharedPreferences): PositionStorage {
         return InternalSharedPreferences(sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCrashReporter(): CrashReporter {
+        return FirebaseCrashReporter()
     }
 }

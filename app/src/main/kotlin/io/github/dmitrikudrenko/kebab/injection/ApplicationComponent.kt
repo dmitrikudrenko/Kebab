@@ -1,6 +1,7 @@
 package io.github.dmitrikudrenko.kebab.injection
 
 import dagger.Component
+import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.injection.auth.AuthModule
 import io.github.dmitrikudrenko.kebab.injection.list.KebabShopsModule
 import io.github.dmitrikudrenko.kebab.injection.map.MapModule
@@ -18,4 +19,5 @@ interface ApplicationComponent {
     fun inject(fragment: KebabShopsMapFragment)
     fun inject(fragment: KebabShopFragment)
     fun inject(fragment: SplashFragment)
+    fun inject(application: KebabApplication)
 }

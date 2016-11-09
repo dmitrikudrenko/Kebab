@@ -36,14 +36,6 @@ class SplashFragment : Fragment(), AuthView {
         binding?.setVariable(BR.presenter, presenter)
     }
 
-    override fun setSignInEnabled(enabled: Boolean) {
-        binding?.signInWithGoogle?.isEnabled = enabled
-    }
-
-    override fun setSignOutEnabled(enabled: Boolean) {
-        binding?.signOutWithGoogle?.isEnabled = enabled
-    }
-
     override fun setupUI(firebaseUser: FirebaseUser?) {
         binding?.signInWithGoogle?.isEnabled = firebaseUser == null
         binding?.signOutWithGoogle?.isEnabled = firebaseUser != null
@@ -60,9 +52,9 @@ class SplashFragment : Fragment(), AuthView {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_SIGN_IN) {
-            presenter.onGoogleSignedIn(data)
-        } else super.onActivityResult(requestCode, resultCode, data)
+        if (!presenter.onActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     override fun showProgressDialog(): Boolean {
@@ -77,13 +69,5 @@ class SplashFragment : Fragment(), AuthView {
 
     override fun showError(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun googleAccountAuth(intent: Intent) {
-        startActivityForResult(intent, RC_SIGN_IN)
-    }
-
-    companion object {
-        val RC_SIGN_IN = 9001
     }
 }

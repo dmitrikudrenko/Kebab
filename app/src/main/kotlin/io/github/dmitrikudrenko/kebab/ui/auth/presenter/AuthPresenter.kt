@@ -8,5 +8,5 @@ import io.github.dmitrikudrenko.kebab.ui.auth.view.AuthView
 interface AuthPresenter : IPresenter<AuthView> {
     fun onSignInClick()
     fun onSignOutClick()
-    fun onGoogleSignedIn(data: Intent?)
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean
 }

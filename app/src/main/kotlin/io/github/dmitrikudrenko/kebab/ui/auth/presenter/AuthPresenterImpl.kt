@@ -45,7 +45,7 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
     }
 
     override fun onSignInClick() {
-        view.googleAccountAuth(Auth.GoogleSignInApi.getSignInIntent(googleApiClient))
+        view.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(googleApiClient), RC_SIGN_IN)
     }
 
     override fun onSignOutClick() {
@@ -67,11 +67,15 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
         return true
     }
 
-    override fun onGoogleSignedIn(data: Intent?) {
-        val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-        if (result.isSuccess) {
-            authViaGoogleAccount(result.signInAccount)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) : Boolean {
+        if (requestCode == RC_SIGN_IN) {
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            if (result.isSuccess) {
+                authViaGoogleAccount(result.signInAccount)
+            }
+            return true
         }
+        return false
     }
 
     private fun authViaGoogleAccount(googleSignInAccount: GoogleSignInAccount?) {
@@ -82,5 +86,9 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
                         view.showError("Authentication failed.")
                     view.hideProgressDialog()
                 }
+    }
+
+    companion object {
+        val RC_SIGN_IN = 9001
     }
 }

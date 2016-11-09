@@ -3,7 +3,6 @@ package io.github.dmitrikudrenko.kebab.ui.shop
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,16 @@ import android.widget.TextView
 import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
-import io.github.dmitrikudrenko.kebab.data.storage.IKebabShopDataController
+import io.github.dmitrikudrenko.kebab.ui.shop.presenter.KebabShopPresenter
+import io.github.dmitrikudrenko.kebab.ui.shop.view.KebabShopView
 import javax.inject.Inject
 
 
-class KebabShopFragment : Fragment() {
+class KebabShopFragment : Fragment(), KebabShopView {
     @Inject
-    lateinit var kebabShopDataController: IKebabShopDataController
+    lateinit var presenter: KebabShopPresenter
 
-    private var kebabShopId: Long? = null
+    private var kebabShopId: Long = 0
     private var onShopLoadingListener: OnShopLoadingListener? = null
 
     private var shopNameView: TextView? = null
@@ -43,17 +43,11 @@ class KebabShopFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        kebabShopId?.let {
-            kebabShopDataController.getKebabShop(it)
-                    .subscribe(
-                            { setData(it) },
-                            { Log.e("Data loading", it.message, it) }
-                    )
-        }
+        presenter.setShopId(kebabShopId)
+        presenter.init(this)
     }
 
-    private fun setData(shop: IKebabShop?) {
+    override fun setData(shop: IKebabShop?) {
         shop?.let {
             onShopLoadingListener?.onShopLoaded(it)
             shopNameView?.text = it.getName()

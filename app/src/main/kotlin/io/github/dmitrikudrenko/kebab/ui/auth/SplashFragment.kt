@@ -57,14 +57,12 @@ class SplashFragment : Fragment(), AuthView {
         }
     }
 
-    override fun showProgressDialog(): Boolean {
+    override fun showProgressDialog() {
         ProgressDialogFragment.create().show(childFragmentManager, ProgressDialogFragment.TAG)
-        return true
     }
 
-    override fun hideProgressDialog(): Boolean {
+    override fun hideProgressDialog() {
         (childFragmentManager.findFragmentByTag(ProgressDialogFragment.TAG) as ProgressDialogFragment?)?.dismissAllowingStateLoss()
-        return true
     }
 
     override fun showError(message: String?) {

@@ -57,14 +57,12 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
         view.showError(connectionResult.errorMessage)
     }
 
-    override fun onStart(): Boolean {
+    override fun onStart() {
         firebaseAuth.addAuthStateListener(authListener)
-        return true
     }
 
-    override fun onStop(): Boolean {
+    override fun onStop() {
         firebaseAuth.removeAuthStateListener(authListener)
-        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) : Boolean {

@@ -8,5 +8,6 @@ import io.github.dmitrikudrenko.kebab.ui.auth.view.AuthView
 interface AuthPresenter : IPresenter<AuthView> {
     fun onSignInClick()
     fun onSignOutClick()
+    fun onSignInViaMail(login: CharSequence, password: CharSequence)
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean
 }

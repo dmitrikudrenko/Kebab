@@ -4,6 +4,14 @@ import com.google.firebase.crash.FirebaseCrash
 
 
 class FirebaseCrashReporter: CrashReporter {
+    override fun init() {
+        val oldExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            log(throwable)
+            oldExceptionHandler.uncaughtException(thread, throwable)
+        }
+    }
+
     override fun log(message: String) {
         FirebaseCrash.log(message)
     }

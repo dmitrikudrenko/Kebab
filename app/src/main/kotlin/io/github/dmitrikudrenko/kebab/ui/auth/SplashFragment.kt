@@ -58,7 +58,8 @@ class SplashFragment : Fragment(), AuthView {
     }
 
     override fun showProgressDialog() {
-        ProgressDialogFragment.create().show(childFragmentManager, ProgressDialogFragment.TAG)
+        if (childFragmentManager.findFragmentByTag(ProgressDialogFragment.TAG) == null)
+            ProgressDialogFragment.create().show(childFragmentManager, ProgressDialogFragment.TAG)
     }
 
     override fun hideProgressDialog() {

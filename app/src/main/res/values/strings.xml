@@ -2,4 +2,7 @@
     <string name="app_name">Kebab</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_out_with_google">Sign out with Google</string>
+    <string name="sign_in_with_email">Sign in with E-mail</string>
+    <string name="login">E-mail</string>
+    <string name="password">Password</string>
 </resources>

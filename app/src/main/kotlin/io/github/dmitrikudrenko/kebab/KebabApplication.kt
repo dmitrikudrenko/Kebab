@@ -8,12 +8,13 @@ import io.github.dmitrikudrenko.kebab.injection.KebabModule
 import io.github.dmitrikudrenko.kebab.injection.auth.AuthModule
 import javax.inject.Inject
 
-class KebabApplication: Application() {
+class KebabApplication : Application() {
     @Inject
     lateinit var crashReporter: CrashReporter
 
     companion object {
         @JvmStatic lateinit var graph: ApplicationComponent
+        @JvmStatic val debug = BuildConfig.DEBUG
     }
 
     override fun onCreate() {
@@ -23,6 +24,6 @@ class KebabApplication: Application() {
                 .authModule(AuthModule())
                 .build()
         graph.inject(this)
-        Thread.setDefaultUncaughtExceptionHandler { thread, throwable -> crashReporter.log(throwable) }
+        crashReporter.init()
     }
 }

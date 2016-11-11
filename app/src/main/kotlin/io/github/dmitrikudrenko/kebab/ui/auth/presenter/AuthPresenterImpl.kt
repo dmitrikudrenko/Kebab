@@ -8,6 +8,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
 import io.github.dmitrikudrenko.kebab.ui.auth.view.AuthView
 
@@ -53,6 +54,36 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
         Auth.GoogleSignInApi.revokeAccess(googleApiClient)
     }
 
+    override fun onSignInViaMail(login: CharSequence, password: CharSequence) {
+        if (login.isNotEmpty() && password.isNotEmpty()) {
+            view.showProgressDialog()
+            firebaseAuth.signInWithEmailAndPassword(login.toString(), password.toString())
+                    .addOnCompleteListener {
+                        if (!it.isSuccessful)
+                            handleSignInError(it.exception, login, password)
+                        view.hideProgressDialog()
+                    }
+        } else view.showError("Login and password can't be empty")
+    }
+
+    private fun handleSignInError(exception: Exception?, login: CharSequence, password: CharSequence) {
+        if (exception != null) {
+            when (exception.javaClass) {
+                FirebaseAuthInvalidUserException::class.java -> createUser(login, password)
+                else -> view.showError(exception.message ?: "Authentication exception.")
+            }
+        } else view.showError("Authentication exception.")
+    }
+
+    private fun createUser(login: CharSequence, password: CharSequence) {
+        view.showProgressDialog()
+        firebaseAuth.createUserWithEmailAndPassword(login.toString(), password.toString())
+                .addOnCompleteListener {
+                    if (!it.isSuccessful)
+                        view.showError(it.exception?.message ?: "Authentication exception.")
+                }
+    }
+
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
         view.showError(connectionResult.errorMessage)
     }
@@ -65,7 +96,7 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
         firebaseAuth.removeAuthStateListener(authListener)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) : Boolean {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode == RC_SIGN_IN) {
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if (result.isSuccess) {
@@ -81,7 +112,7 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
         firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null))
                 .addOnCompleteListener(view.getActivity()) {
                     if (!it.isSuccessful)
-                        view.showError("Authentication failed.")
+                        view.showError(it.exception?.message ?: "Authentication exception.")
                     view.hideProgressDialog()
                 }
     }

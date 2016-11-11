@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/login"
             android:inputType="textEmailAddress"
-            android:text="darkdelphin@inbox.ru" />
+            android:text="@string/admin.login" />
 
         <EditText
             android:id="@+id/password"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:text="1qaz!QAZ" />
+            android:text="@string/admin.password" />
 
         <Button
             android:id="@+id/sign_in_with_mail"

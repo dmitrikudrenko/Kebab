@@ -38,7 +38,7 @@ class SplashFragment : Fragment(), AuthView {
 
     override fun setupUI(firebaseUser: FirebaseUser?) {
         binding?.signInWithGoogle?.isEnabled = firebaseUser == null
-        binding?.signOutWithGoogle?.isEnabled = firebaseUser != null
+        binding?.signOut?.isEnabled = firebaseUser != null
     }
 
     override fun onStart() {
@@ -68,5 +68,13 @@ class SplashFragment : Fragment(), AuthView {
 
     override fun showError(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onEmptyLogin() {
+        binding?.emailLoginContainer?.loginTextLayout?.error = getString(R.string.auth_error_empty_login)
+    }
+
+    override fun onEmptyPassword() {
+        binding?.emailLoginContainer?.passwordTextLayout?.error = getString(R.string.auth_error_empty_password)
     }
 }

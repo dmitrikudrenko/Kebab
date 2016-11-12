@@ -39,7 +39,7 @@ class FirebaseKebabShopDataController @Inject constructor(val context: Context, 
         })
     }
 
-    override fun getKebabShops(): Observable<List<IKebabShop>> {
+    override fun getKebabShops(): Observable<List<IKebabShop>?> {
         return Observable.create { subscriber ->
             val onDataChangedListener = object : OnDataChangedListener {
                 override fun onDataChanged() {
@@ -52,7 +52,7 @@ class FirebaseKebabShopDataController @Inject constructor(val context: Context, 
         }
     }
 
-    override fun getKebabShop(id: Long): Observable<IKebabShop> {
+    override fun getKebabShop(id: Long): Observable<IKebabShop?> {
         return Observable.create { subscriber ->
             val onDataChangedListener = object : OnDataChangedListener {
                 override fun onDataChanged() {
@@ -62,6 +62,18 @@ class FirebaseKebabShopDataController @Inject constructor(val context: Context, 
                 }
             }
             registerOnDataChangeListener(onDataChangedListener)
+        }
+    }
+
+    override fun createKebabShop(kebabShop: IKebabShop): Observable<Boolean> {
+        return Observable.create { subscriber ->
+            instance.getReference("Kebabs").push().child(kebabShop.getId().toString()).setValue(kebabShop)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            subscriber.onNext(true)
+                            subscriber.onCompleted()
+                        } else subscriber.onError(it.exception)
+                    }
         }
     }
 

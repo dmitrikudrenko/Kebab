@@ -38,7 +38,7 @@ class KebabShopsListFragment : Fragment(), KebabShopsView {
         presenter.init(this)
     }
 
-    override fun setData(data: List<IKebabShop>) {
-        listPresenter.onDataChanged(data)
+    override fun setData(data: List<IKebabShop>?) {
+        data?.let { listPresenter.onDataChanged(it) }
     }
 }

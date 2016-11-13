@@ -20,7 +20,7 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
 
     private lateinit var view: AuthView
 
-    override fun init(view: AuthView) {
+    override fun onCreate(view: AuthView) {
         this.view = view
         authListener = FirebaseAuth.AuthStateListener {
             val firebaseUser = firebaseAuth.currentUser

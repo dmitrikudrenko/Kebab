@@ -32,7 +32,7 @@ class SplashFragment : Fragment(), AuthView {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        presenter.init(this)
+        presenter.onCreate(this)
         binding?.setVariable(BR.presenter, presenter)
     }
 

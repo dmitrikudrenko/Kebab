@@ -27,7 +27,7 @@ import io.github.dmitrikudrenko.kebab.ui.map.presenter.MapPresenter
 import io.github.dmitrikudrenko.kebab.ui.map.view.MapView
 import javax.inject.Inject
 
-class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView {
+class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView, GoogleMap.OnMapLoadedCallback {
     @Inject
     lateinit var presenter: MapPresenter
 
@@ -35,13 +35,13 @@ class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView {
     lateinit var positionStorage: PositionStorage
 
     private var mapFragment: SupportMapFragment? = null
+
     private var map: GoogleMap? = null
     private val markers = ArrayMap<Marker, IKebabShop>()
     private var bounds: LatLngBounds.Builder? = null
-
     private var onShopSelectedListener: OnShopSelectedListener? = null
-    private var onOutsideClickListener: OnOutsideClickListener? = null
 
+    private var onOutsideClickListener: OnOutsideClickListener? = null
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is OnShopSelectedListener)
@@ -55,6 +55,11 @@ class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView {
         return inflater?.inflate(R.layout.f_kebab_shops_map, parent, false)
     }
 
+    override fun onMapLoaded() {
+        if (bounds != null)
+            map?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds?.build(), 200))
+    }
+
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             mapFragment = SupportMapFragment.newInstance()
@@ -63,10 +68,18 @@ class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView {
                     .commitNow()
         } else mapFragment = childFragmentManager.findFragmentByTag(TAG) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+        presenter.onCreate(this)
+    }
+
+    override fun onStop() {
+        presenter.onStop()
+        map?.setOnMapLoadedCallback(null)
+        super.onStop()
     }
 
     override fun onMapReady(map: GoogleMap?) {
         this.map = map
+        presenter.onStart()
         map?.setOnMarkerClickListener {
             if (it != null) {
                 val shop = markers[it]
@@ -77,13 +90,10 @@ class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView {
             }
             false
         }
-        map?.setOnMapLoadedCallback {
-            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds?.build(), 200))
-        }
+        map?.setOnMapLoadedCallback(this)
         map?.setOnMapClickListener { onOutsideClickListener?.onClickOutside() }
         positionStorage.restorePosition()
                 ?.let { map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), it.zoom)) }
-        presenter.init(this)
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             map?.isMyLocationEnabled = true
     }

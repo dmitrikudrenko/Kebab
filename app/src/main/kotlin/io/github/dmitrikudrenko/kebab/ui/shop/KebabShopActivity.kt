@@ -1,5 +1,7 @@
 package io.github.dmitrikudrenko.kebab.ui.shop
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
@@ -45,5 +47,10 @@ class KebabShopActivity : AppCompatActivity(), OnShopLoadingListener {
 
     companion object {
         val TAG = "KebabShopFragment"
+        val KEY_ID = "id"
+
+        fun startActivity(context: Context, kebabShop: IKebabShop) {
+            context.startActivity(Intent(context, KebabShopActivity::class.java).putExtra(KEY_ID, kebabShop.getId()))
+        }
     }
 }

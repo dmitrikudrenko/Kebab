@@ -34,7 +34,7 @@ class KebabShopFragment : Fragment(), KebabShopView {
         val view = inflater?.inflate(R.layout.f_kebab_shop, container, false)
         injectViews(view)
         KebabApplication.graph.inject(this)
-        kebabShopId = arguments.getLong("id")
+        kebabShopId = arguments.getLong(KebabShopActivity.KEY_ID)
         return view
     }
 
@@ -44,7 +44,17 @@ class KebabShopFragment : Fragment(), KebabShopView {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         presenter.setShopId(kebabShopId)
-        presenter.init(this)
+        presenter.onCreate(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
+    override fun onStop() {
+        presenter.onStop()
+        super.onStop()
     }
 
     override fun setData(shop: IKebabShop?) {

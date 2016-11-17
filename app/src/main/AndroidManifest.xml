@@ -23,19 +23,31 @@
             android:value="AIzaSyD2nXGmPh4iqDvDXNeI7_BmxAct73Nnw4Y" />
 
         <activity android:name=".ui.map.KebabShopsMapActivity">
-
-        </activity>
-
-        <activity android:name=".ui.list.KebabShopsListActivity" />
-        <activity android:name=".ui.shop.KebabShopActivity" />
-
-        <activity android:name=".ui.auth.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.list.KebabShopsListActivity" >
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".ui.shop.KebabShopActivity" />
+
+        <activity android:name=".ui.auth.SplashActivity" >
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>-->
         </activity>
     </application>
 

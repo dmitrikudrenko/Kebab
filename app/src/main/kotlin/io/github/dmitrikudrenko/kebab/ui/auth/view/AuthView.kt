@@ -8,5 +8,7 @@ import io.github.dmitrikudrenko.kebab.mvp.IView
 interface AuthView: IView {
     fun setupUI(firebaseUser: FirebaseUser?)
     fun showError(message: String?)
+    fun onEmptyLogin()
+    fun onEmptyPassword()
     fun startActivityForResult(intent: Intent, requestCode: Int)
 }

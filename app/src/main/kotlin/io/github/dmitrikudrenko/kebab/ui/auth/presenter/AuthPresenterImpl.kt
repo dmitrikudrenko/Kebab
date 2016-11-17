@@ -20,7 +20,7 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
 
     private lateinit var view: AuthView
 
-    override fun init(view: AuthView) {
+    override fun onCreate(view: AuthView) {
         this.view = view
         authListener = FirebaseAuth.AuthStateListener {
             val firebaseUser = firebaseAuth.currentUser
@@ -55,15 +55,22 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
     }
 
     override fun onSignInViaMail(login: CharSequence, password: CharSequence) {
-        if (login.isNotEmpty() && password.isNotEmpty()) {
-            view.showProgressDialog()
-            firebaseAuth.signInWithEmailAndPassword(login.toString(), password.toString())
-                    .addOnCompleteListener {
-                        if (!it.isSuccessful)
-                            handleSignInError(it.exception, login, password)
-                        view.hideProgressDialog()
-                    }
-        } else view.showError("Login and password can't be empty")
+        if (login.isBlank()) {
+            view.onEmptyLogin()
+            return
+        }
+        if (password.isBlank()) {
+            view.onEmptyPassword()
+            return
+        }
+
+        view.showProgressDialog()
+        firebaseAuth.signInWithEmailAndPassword(login.toString(), password.toString())
+                .addOnCompleteListener {
+                    if (!it.isSuccessful)
+                        handleSignInError(it.exception, login, password)
+                    view.hideProgressDialog()
+                }
     }
 
     private fun handleSignInError(exception: Exception?, login: CharSequence, password: CharSequence) {

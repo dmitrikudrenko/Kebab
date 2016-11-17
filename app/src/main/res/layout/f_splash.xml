@@ -23,8 +23,8 @@
         <include
             android:id="@+id/email_login_container"
             layout="@layout/v_email_login"
-            app:visible="@{settings.debug}"
-            app:presenter="@{presenter}" />
+            app:presenter="@{presenter}"
+            app:visible="@{settings.debug}" />
 
         <Button
             android:id="@+id/sign_in_with_google"
@@ -32,14 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.onSignInClick()}"
-            android:text="@string/sign_in_with_google" />
+            android:text="@string/auth.sign_in_with_google" />
 
         <Button
-            android:id="@+id/sign_out_with_google"
-            style="@style/sign_in_with_google_btn"
+            android:id="@+id/sign_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.onSignOutClick()}"
-            android:text="@string/sign_out_with_google" />
+            android:text="@string/auth.sign_out" />
     </LinearLayout>
 </layout>

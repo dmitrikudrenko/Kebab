@@ -1,44 +1,66 @@
 package io.github.dmitrikudrenko.kebab.ui.list
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
+import io.github.dmitrikudrenko.kebab.databinding.FKebabShopsListBinding
 import io.github.dmitrikudrenko.kebab.ui.list.presenter.KebabShopsPresenter
 import io.github.dmitrikudrenko.kebab.ui.list.view.KebabShopsView
+import io.github.dmitrikudrenko.kebab.ui.shop.KebabShopActivity
+import rx.Subscription
 import javax.inject.Inject
 
 class KebabShopsListFragment : Fragment(), KebabShopsView {
     @Inject
     lateinit var presenter: KebabShopsPresenter
 
-    private var recyclerView: RecyclerView? = null
+    private var binding: FKebabShopsListBinding? = null
     private val listPresenter = KebabListPresenter()
+    private var clickSubscription: Subscription? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.f_kebab_shops_list, container, false)
-        injectViews(view)
+        binding = DataBindingUtil.inflate(inflater, R.layout.f_kebab_shops_list, container, false)
         KebabApplication.graph.inject(this)
-        return view
-    }
-
-    private fun injectViews(view: View?) {
-        recyclerView = view?.findViewById(R.id.recycler_view) as RecyclerView?
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = KebabShopsAdapter(listPresenter)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        presenter.init(this)
+        val adapter = KebabShopsAdapter(listPresenter)
+        binding?.recyclerView?.adapter = adapter
+        clickSubscription = adapter.getShopClickListener().subscribe(
+                { presenter.onShopClick(it) },
+                { Log.e("Shop clicked", it.message, it) }
+        )
+        presenter.onCreate(this)
     }
 
-    override fun setData(data: List<IKebabShop>) {
-        listPresenter.onDataChanged(data)
+    override fun onDestroyView() {
+        clickSubscription?.unsubscribe()
+        super.onDestroyView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
+    override fun onStop() {
+        presenter.onStop()
+        super.onStop()
+    }
+
+    override fun setData(data: List<IKebabShop>?) {
+        data?.let { listPresenter.onDataChanged(it) }
+    }
+
+    override fun openShop(kebabShop: IKebabShop) {
+        KebabShopActivity.startActivity(activity, kebabShop)
     }
 }

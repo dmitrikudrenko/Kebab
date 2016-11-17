@@ -5,5 +5,6 @@ import io.github.dmitrikudrenko.kebab.mvp.IView
 
 
 interface KebabShopsView: IView {
-    fun setData(data: List<IKebabShop>)
+    fun setData(data: List<IKebabShop>?)
+    fun openShop(kebabShop: IKebabShop)
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -18,29 +20,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="@{visible ? View.VISIBLE : View.GONE}">
+        android:padding="16dp"
+        android:visibility="@{visible ? View.VISIBLE : View.GONE}"
+        tools:background="#fff">
 
-        <EditText
-            android:id="@+id/login"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/login_text_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login"
-            android:inputType="textEmailAddress"
-            android:text="@string/admin.login" />
+            app:errorEnabled="true">
 
-        <EditText
-            android:id="@+id/password"
+            <EditText
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/auth.login"
+                android:inputType="textEmailAddress"
+                android:text="@string/admin.login"
+                android:textColorHint="#000" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_text_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:text="@string/admin.password" />
+            app:errorEnabled="true">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/auth.password"
+                android:inputType="textPassword"
+                android:text="@string/admin.password" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/sign_in_with_mail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.onSignInViaMail(login.getText(), password.getText())}"
-            android:text="@string/sign_in_with_email" />
+            android:text="@string/auth.sign_in_with_email" />
     </LinearLayout>
 </layout>

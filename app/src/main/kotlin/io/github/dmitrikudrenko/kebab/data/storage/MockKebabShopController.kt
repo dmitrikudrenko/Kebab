@@ -11,7 +11,7 @@ import java.io.InputStreamReader
 class MockKebabShopController(private val context: Context) : IKebabShopDataController {
     private var cache: List<IKebabShop>? = null
 
-    override fun getKebabShops(): Observable<List<IKebabShop>> {
+    override fun getKebabShops(): Observable<List<IKebabShop>?> {
         if (cache == null) {
             val inputStream = context.assets.open("kebabShops.json")
             val gson = GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create()
@@ -21,7 +21,12 @@ class MockKebabShopController(private val context: Context) : IKebabShopDataCont
         return Observable.just(cache)
     }
 
-    override fun getKebabShop(id: Long): Observable<IKebabShop> {
+    override fun getKebabShop(id: Long): Observable<IKebabShop?> {
         return Observable.just(cache?.find { it.getId() == id })
+    }
+
+    override fun createKebabShop(kebabShop: IKebabShop): Observable<Boolean> {
+        cache?.plus(kebabShop)
+        return Observable.just(true)
     }
 }

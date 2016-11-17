@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
+    def majorVersion = "1"
+    def minorVersion = "0"
+    def maintenance = "0"
+
     compileSdkVersion androidCompileSdkVersion
     buildToolsVersion androidBuildToolsVersion
     defaultConfig {
@@ -10,7 +14,7 @@ android {
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "${majorVersion}.${minorVersion}.${maintenance}.${revision}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -40,6 +44,13 @@ android {
             storePassword androidKeystorePassword
             keyAlias androidKeystoreAlias
             keyPassword androidKeystorePassword
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
         }
     }
 }

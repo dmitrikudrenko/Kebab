@@ -16,6 +16,9 @@ project.ext {
     androidSupportLibraryVersion = "25.0.0"
 }
 
+ext.revision = 'git rev-list --count HEAD'.execute().text.trim()
+ext.hash = 'git rev-parse --short HEAD'.execute().text.trim()
+
 buildscript {
     ext.kotlin_version = '1.0.4'
     repositories {

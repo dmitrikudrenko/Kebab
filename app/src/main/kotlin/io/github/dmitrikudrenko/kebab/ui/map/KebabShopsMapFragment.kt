@@ -23,13 +23,11 @@ import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.internal.Position
 import io.github.dmitrikudrenko.kebab.data.internal.PositionStorage
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
-import io.github.dmitrikudrenko.kebab.ui.map.presenter.MapPresenter
-import io.github.dmitrikudrenko.kebab.ui.map.view.MapView
 import javax.inject.Inject
 
-class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView, GoogleMap.OnMapLoadedCallback {
+class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapContract.MapView, GoogleMap.OnMapLoadedCallback {
     @Inject
-    lateinit var presenter: MapPresenter
+    lateinit var presenter: MapContract.MapPresenter
 
     @Inject
     lateinit var positionStorage: PositionStorage
@@ -68,7 +66,7 @@ class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapView, GoogleMap
                     .commitNow()
         } else mapFragment = childFragmentManager.findFragmentByTag(TAG) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-        presenter.onCreate(this)
+        presenter.subscribe(this)
     }
 
     override fun onStop() {

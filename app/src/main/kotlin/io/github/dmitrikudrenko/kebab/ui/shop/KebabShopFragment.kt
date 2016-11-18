@@ -10,14 +10,12 @@ import android.widget.TextView
 import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
-import io.github.dmitrikudrenko.kebab.ui.shop.presenter.KebabShopPresenter
-import io.github.dmitrikudrenko.kebab.ui.shop.view.KebabShopView
 import javax.inject.Inject
 
 
-class KebabShopFragment : Fragment(), KebabShopView {
+class KebabShopFragment : Fragment(), KebebShopContract.KebabShopView {
     @Inject
-    lateinit var presenter: KebabShopPresenter
+    lateinit var presenter: KebebShopContract.KebabShopPresenter
 
     private var kebabShopId: Long = 0
     private var onShopLoadingListener: OnShopLoadingListener? = null
@@ -44,7 +42,7 @@ class KebabShopFragment : Fragment(), KebabShopView {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         presenter.setShopId(kebabShopId)
-        presenter.onCreate(this)
+        presenter.subscribe(this)
     }
 
     override fun onStart() {

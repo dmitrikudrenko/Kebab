@@ -14,14 +14,12 @@ import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.databinding.FSplashBinding
 import io.github.dmitrikudrenko.kebab.ui.ProgressDialogFragment
-import io.github.dmitrikudrenko.kebab.ui.auth.presenter.AuthPresenter
-import io.github.dmitrikudrenko.kebab.ui.auth.view.AuthView
 import javax.inject.Inject
 
 
-class SplashFragment : Fragment(), AuthView {
+class SplashFragment : Fragment(), AuthContract.AuthView {
     @Inject
-    lateinit var presenter: AuthPresenter
+    lateinit var presenter: AuthContract.AuthPresenter
 
     private var binding: FSplashBinding? = null
 
@@ -32,7 +30,7 @@ class SplashFragment : Fragment(), AuthView {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        presenter.onCreate(this)
+        presenter.subscribe(this)
         binding?.setVariable(BR.presenter, presenter)
     }
 

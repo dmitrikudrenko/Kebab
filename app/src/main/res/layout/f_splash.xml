@@ -6,7 +6,7 @@
 
         <variable
             name="presenter"
-            type="io.github.dmitrikudrenko.kebab.ui.auth.presenter.AuthPresenter" />
+            type="io.github.dmitrikudrenko.kebab.ui.auth.AuthContract.AuthPresenter" />
 
         <variable
             name="settings"

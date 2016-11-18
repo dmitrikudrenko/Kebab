@@ -10,17 +10,17 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
-import io.github.dmitrikudrenko.kebab.ui.auth.view.AuthView
+import io.github.dmitrikudrenko.kebab.ui.auth.AuthContract
 
 
-class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedListener {
+class AuthPresenterImpl() : AuthContract.AuthPresenter, GoogleApiClient.OnConnectionFailedListener {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private var googleApiClient: GoogleApiClient? = null
-    private lateinit var authListener: FirebaseAuth.AuthStateListener
+    private var authListener: FirebaseAuth.AuthStateListener? = null
 
-    private lateinit var view: AuthView
+    private var view: AuthContract.AuthView? = null
 
-    override fun onCreate(view: AuthView) {
+    override fun subscribe(view: AuthContract.AuthView) {
         this.view = view
         authListener = FirebaseAuth.AuthStateListener {
             val firebaseUser = firebaseAuth.currentUser
@@ -34,19 +34,25 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
         view.setupUI(firebaseAuth.currentUser)
     }
 
+    override fun unsubscribe() {
+        view = null
+    }
+
     private fun setupGoogleApi() {
         val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("939643994696-abj187kgngjvb5ul4ei7sluflitdcfrv.apps.googleusercontent.com")
                 .requestEmail()
                 .build()
-        googleApiClient = GoogleApiClient.Builder(view.getActivity())
-                .enableAutoManage(view.getActivity(), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, options)
-                .build()
+        view?.getActivity()?.let {
+            googleApiClient = GoogleApiClient.Builder(it)
+                    .enableAutoManage(it, this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, options)
+                    .build()
+        }
     }
 
     override fun onSignInClick() {
-        view.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(googleApiClient), RC_SIGN_IN)
+        view?.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(googleApiClient), RC_SIGN_IN)
     }
 
     override fun onSignOutClick() {
@@ -56,20 +62,20 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
 
     override fun onSignInViaMail(login: CharSequence, password: CharSequence) {
         if (login.isBlank()) {
-            view.onEmptyLogin()
+            view?.onEmptyLogin()
             return
         }
         if (password.isBlank()) {
-            view.onEmptyPassword()
+            view?.onEmptyPassword()
             return
         }
 
-        view.showProgressDialog()
+        view?.showProgressDialog()
         firebaseAuth.signInWithEmailAndPassword(login.toString(), password.toString())
                 .addOnCompleteListener {
                     if (!it.isSuccessful)
                         handleSignInError(it.exception, login, password)
-                    view.hideProgressDialog()
+                    view?.hideProgressDialog()
                 }
     }
 
@@ -77,30 +83,30 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
         if (exception != null) {
             when (exception.javaClass) {
                 FirebaseAuthInvalidUserException::class.java -> createUser(login, password)
-                else -> view.showError(exception.message ?: "Authentication exception.")
+                else -> view?.showError(exception.message ?: "Authentication exception.")
             }
-        } else view.showError("Authentication exception.")
+        } else view?.showError("Authentication exception.")
     }
 
     private fun createUser(login: CharSequence, password: CharSequence) {
-        view.showProgressDialog()
+        view?.showProgressDialog()
         firebaseAuth.createUserWithEmailAndPassword(login.toString(), password.toString())
                 .addOnCompleteListener {
                     if (!it.isSuccessful)
-                        view.showError(it.exception?.message ?: "Authentication exception.")
+                        view?.showError(it.exception?.message ?: "Authentication exception.")
                 }
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        view.showError(connectionResult.errorMessage)
+        view?.showError(connectionResult.errorMessage)
     }
 
     override fun onStart() {
-        firebaseAuth.addAuthStateListener(authListener)
+        authListener?.let { firebaseAuth.addAuthStateListener(it) }
     }
 
     override fun onStop() {
-        firebaseAuth.removeAuthStateListener(authListener)
+        authListener?.let { firebaseAuth.removeAuthStateListener(it) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
@@ -115,13 +121,16 @@ class AuthPresenterImpl() : AuthPresenter, GoogleApiClient.OnConnectionFailedLis
     }
 
     private fun authViaGoogleAccount(googleSignInAccount: GoogleSignInAccount?) {
-        view.showProgressDialog()
-        firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null))
-                .addOnCompleteListener(view.getActivity()) {
-                    if (!it.isSuccessful)
-                        view.showError(it.exception?.message ?: "Authentication exception.")
-                    view.hideProgressDialog()
-                }
+        view?.getActivity()?.let {
+            view?.showProgressDialog()
+            firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null))
+                    .addOnCompleteListener(it) {
+                        if (!it.isSuccessful)
+                            view?.showError(it.exception?.message ?: "Authentication exception.")
+                        view?.hideProgressDialog()
+                    }
+        }
+
     }
 
     companion object {

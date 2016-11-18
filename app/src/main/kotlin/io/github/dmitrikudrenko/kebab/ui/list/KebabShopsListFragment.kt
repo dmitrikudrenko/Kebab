@@ -11,15 +11,13 @@ import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
 import io.github.dmitrikudrenko.kebab.databinding.FKebabShopsListBinding
-import io.github.dmitrikudrenko.kebab.ui.list.presenter.KebabShopsPresenter
-import io.github.dmitrikudrenko.kebab.ui.list.view.KebabShopsView
 import io.github.dmitrikudrenko.kebab.ui.shop.KebabShopActivity
 import rx.Subscription
 import javax.inject.Inject
 
-class KebabShopsListFragment : Fragment(), KebabShopsView {
+class KebabShopsListFragment : Fragment(), KebabShopsContract.KebabShopsView {
     @Inject
-    lateinit var presenter: KebabShopsPresenter
+    lateinit var presenter: KebabShopsContract.KebabShopsPresenter
 
     private var binding: FKebabShopsListBinding? = null
     private val listPresenter = KebabListPresenter()
@@ -38,7 +36,7 @@ class KebabShopsListFragment : Fragment(), KebabShopsView {
                 { presenter.onShopClick(it) },
                 { Log.e("Shop clicked", it.message, it) }
         )
-        presenter.onCreate(this)
+        presenter.subscribe(this)
     }
 
     override fun onDestroyView() {

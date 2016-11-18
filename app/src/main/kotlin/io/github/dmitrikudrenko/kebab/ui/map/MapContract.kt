@@ -1,15 +1,14 @@
 package io.github.dmitrikudrenko.kebab.ui.map
 
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
-import io.github.dmitrikudrenko.kebab.mvp.IPresenter
-import io.github.dmitrikudrenko.kebab.mvp.IView
+import io.github.dmitrikudrenko.kebab.mvp.Contract
 
 
 interface MapContract {
-    interface MapView : IView {
+    interface MapView : Contract.IView {
         fun setData(data: List<IKebabShop>?)
     }
 
-    interface MapPresenter : IPresenter<MapView> {
+    interface MapPresenter : Contract.IPresenter<MapView> {
     }
 }

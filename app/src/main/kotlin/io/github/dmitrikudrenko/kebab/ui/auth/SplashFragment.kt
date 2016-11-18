@@ -3,7 +3,6 @@ package io.github.dmitrikudrenko.kebab.ui.auth
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,14 @@ import io.github.dmitrikudrenko.kebab.BR
 import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.databinding.FSplashBinding
+import io.github.dmitrikudrenko.kebab.ui.BaseFragment
 import io.github.dmitrikudrenko.kebab.ui.ProgressDialogFragment
 import javax.inject.Inject
 
 
-class SplashFragment : Fragment(), AuthContract.AuthView {
+class SplashFragment : BaseFragment<AuthContract.AuthView, AuthContract.AuthPresenter>(), AuthContract.AuthView {
     @Inject
-    lateinit var presenter: AuthContract.AuthPresenter
+    override lateinit var presenter: AuthContract.AuthPresenter
 
     private var binding: FSplashBinding? = null
 
@@ -37,16 +37,6 @@ class SplashFragment : Fragment(), AuthContract.AuthView {
     override fun setupUI(firebaseUser: FirebaseUser?) {
         binding?.signInWithGoogle?.isEnabled = firebaseUser == null
         binding?.signOut?.isEnabled = firebaseUser != null
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        presenter.onStop()
-        super.onStop()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

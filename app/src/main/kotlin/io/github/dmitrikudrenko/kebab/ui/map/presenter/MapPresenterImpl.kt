@@ -4,10 +4,9 @@ import android.util.Log
 import io.github.dmitrikudrenko.kebab.data.storage.IKebabShopDataController
 import io.github.dmitrikudrenko.kebab.ui.map.MapContract
 import rx.Subscription
-import javax.inject.Inject
 
 
-class MapPresenterImpl @Inject constructor(val kebabShopDataController: IKebabShopDataController) : MapContract.MapPresenter {
+class MapPresenterImpl constructor(val kebabShopDataController: IKebabShopDataController) : MapContract.MapPresenter {
     private var view: MapContract.MapView? = null
     private var dataSubscription: Subscription? = null
 

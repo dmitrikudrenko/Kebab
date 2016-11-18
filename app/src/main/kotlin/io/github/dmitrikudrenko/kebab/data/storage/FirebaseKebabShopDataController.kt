@@ -11,10 +11,9 @@ import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
 import io.github.dmitrikudrenko.kebab.data.model.KebabShop
 import rx.Observable
 import java.util.*
-import javax.inject.Inject
 
 
-class FirebaseKebabShopDataController @Inject constructor(val context: Context, val crashReporter: CrashReporter) : IKebabShopDataController {
+class FirebaseKebabShopDataController constructor(val context: Context, val crashReporter: CrashReporter) : IKebabShopDataController {
     private val instance: FirebaseDatabase
     private val cache: MutableList<IKebabShop> = ArrayList<IKebabShop>()
     private val onDataChangedListeners = ArrayList<OnDataChangedListener>()

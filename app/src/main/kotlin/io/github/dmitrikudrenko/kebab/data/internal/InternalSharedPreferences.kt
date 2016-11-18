@@ -1,9 +1,8 @@
 package io.github.dmitrikudrenko.kebab.data.internal
 
 import android.content.SharedPreferences
-import javax.inject.Inject
 
-class InternalSharedPreferences @Inject constructor(private val sharedPreferences: SharedPreferences) :
+class InternalSharedPreferences constructor(private val sharedPreferences: SharedPreferences) :
         SharedPreferences by sharedPreferences, PositionStorage {
 
     override fun savePosition(position: Position) {

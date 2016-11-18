@@ -2,7 +2,6 @@ package io.github.dmitrikudrenko.kebab.ui.list
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +10,14 @@ import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
 import io.github.dmitrikudrenko.kebab.databinding.FKebabShopsListBinding
+import io.github.dmitrikudrenko.kebab.ui.BaseFragment
 import io.github.dmitrikudrenko.kebab.ui.shop.KebabShopActivity
 import rx.Subscription
 import javax.inject.Inject
 
-class KebabShopsListFragment : Fragment(), KebabShopsContract.KebabShopsView {
+class KebabShopsListFragment : BaseFragment<KebabShopsContract.KebabShopsView, KebabShopsContract.KebabShopsPresenter>(), KebabShopsContract.KebabShopsView {
     @Inject
-    lateinit var presenter: KebabShopsContract.KebabShopsPresenter
+    override lateinit var presenter: KebabShopsContract.KebabShopsPresenter
 
     private var binding: FKebabShopsListBinding? = null
     private val listPresenter = KebabListPresenter()
@@ -42,16 +42,6 @@ class KebabShopsListFragment : Fragment(), KebabShopsContract.KebabShopsView {
     override fun onDestroyView() {
         clickSubscription?.unsubscribe()
         super.onDestroyView()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        presenter.onStop()
-        super.onStop()
     }
 
     override fun setData(data: List<IKebabShop>?) {

@@ -2,17 +2,16 @@ package io.github.dmitrikudrenko.kebab.ui.shop.presenter
 
 import android.util.Log
 import io.github.dmitrikudrenko.kebab.data.storage.IKebabShopDataController
-import io.github.dmitrikudrenko.kebab.ui.shop.KebebShopContract
+import io.github.dmitrikudrenko.kebab.ui.shop.KebabShopContract
 import rx.Subscription
-import javax.inject.Inject
 
 
-class KebabShopPresenterImpl @Inject constructor(val kebabShopDataController: IKebabShopDataController) : KebebShopContract.KebabShopPresenter {
-    private var view: KebebShopContract.KebabShopView? = null
+class KebabShopPresenterImpl constructor(val kebabShopDataController: IKebabShopDataController) : KebabShopContract.KebabShopPresenter {
+    private var view: KebabShopContract.KebabShopView? = null
     private var id: Long = 0
     private var dataSubscription: Subscription? = null
 
-    override fun subscribe(view: KebebShopContract.KebabShopView) {
+    override fun subscribe(view: KebabShopContract.KebabShopView) {
         this.view = view
     }
 

@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.ArrayMap
 import android.view.LayoutInflater
@@ -23,11 +22,12 @@ import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.internal.Position
 import io.github.dmitrikudrenko.kebab.data.internal.PositionStorage
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
+import io.github.dmitrikudrenko.kebab.ui.BaseFragment
 import javax.inject.Inject
 
-class KebabShopsMapFragment : Fragment(), OnMapReadyCallback, MapContract.MapView, GoogleMap.OnMapLoadedCallback {
+class KebabShopsMapFragment : BaseFragment<MapContract.MapView, MapContract.MapPresenter>(), OnMapReadyCallback, MapContract.MapView, GoogleMap.OnMapLoadedCallback {
     @Inject
-    lateinit var presenter: MapContract.MapPresenter
+    override lateinit var presenter: MapContract.MapPresenter
 
     @Inject
     lateinit var positionStorage: PositionStorage

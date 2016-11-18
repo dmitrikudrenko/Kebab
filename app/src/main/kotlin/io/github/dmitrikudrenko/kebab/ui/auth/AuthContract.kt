@@ -2,12 +2,11 @@ package io.github.dmitrikudrenko.kebab.ui.auth
 
 import android.content.Intent
 import com.google.firebase.auth.FirebaseUser
-import io.github.dmitrikudrenko.kebab.mvp.IPresenter
-import io.github.dmitrikudrenko.kebab.mvp.IView
+import io.github.dmitrikudrenko.kebab.mvp.Contract
 
 
 interface AuthContract {
-    interface AuthView: IView {
+    interface AuthView: Contract.IView {
         fun setupUI(firebaseUser: FirebaseUser?)
         fun showError(message: String?)
         fun onEmptyLogin()
@@ -15,7 +14,7 @@ interface AuthContract {
         fun startActivityForResult(intent: Intent, requestCode: Int)
     }
 
-    interface AuthPresenter : IPresenter<AuthView> {
+    interface AuthPresenter : Contract.IPresenter<AuthView> {
         fun onSignInClick()
         fun onSignOutClick()
         fun onSignInViaMail(login: CharSequence, password: CharSequence)

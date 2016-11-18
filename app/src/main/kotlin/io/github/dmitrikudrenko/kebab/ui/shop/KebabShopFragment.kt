@@ -2,7 +2,6 @@ package io.github.dmitrikudrenko.kebab.ui.shop
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,15 @@ import android.widget.TextView
 import io.github.dmitrikudrenko.kebab.KebabApplication
 import io.github.dmitrikudrenko.kebab.R
 import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
+import io.github.dmitrikudrenko.kebab.ui.BaseFragment
 import javax.inject.Inject
 
 
-class KebabShopFragment : Fragment(), KebebShopContract.KebabShopView {
+class KebabShopFragment : BaseFragment<KebabShopContract.KebabShopView, KebabShopContract.KebabShopPresenter>(),
+        KebabShopContract.KebabShopView {
     @Inject
-    lateinit var presenter: KebebShopContract.KebabShopPresenter
-
+    override lateinit var presenter: KebabShopContract.KebabShopPresenter
+    
     private var kebabShopId: Long = 0
     private var onShopLoadingListener: OnShopLoadingListener? = null
 
@@ -41,18 +42,8 @@ class KebabShopFragment : Fragment(), KebebShopContract.KebabShopView {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenter.setShopId(kebabShopId)
-        presenter.subscribe(this)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        presenter.onStop()
-        super.onStop()
     }
 
     override fun setData(shop: IKebabShop?) {

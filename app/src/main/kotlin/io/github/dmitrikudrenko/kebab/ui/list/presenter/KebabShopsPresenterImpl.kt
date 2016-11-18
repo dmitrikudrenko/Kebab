@@ -5,10 +5,9 @@ import io.github.dmitrikudrenko.kebab.data.model.IKebabShop
 import io.github.dmitrikudrenko.kebab.data.storage.IKebabShopDataController
 import io.github.dmitrikudrenko.kebab.ui.list.KebabShopsContract
 import rx.Subscription
-import javax.inject.Inject
 
 
-class KebabShopsPresenterImpl @Inject constructor(val kebabShopDataController: IKebabShopDataController) : KebabShopsContract.KebabShopsPresenter {
+class KebabShopsPresenterImpl constructor(val kebabShopDataController: IKebabShopDataController) : KebabShopsContract.KebabShopsPresenter {
     private var view: KebabShopsContract.KebabShopsView? = null
     private var dataSubscription: Subscription? = null
 

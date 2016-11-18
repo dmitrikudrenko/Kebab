@@ -3,7 +3,7 @@ package io.github.dmitrikudrenko.kebab.injection.shop
 import dagger.Module
 import dagger.Provides
 import io.github.dmitrikudrenko.kebab.data.storage.IKebabShopDataController
-import io.github.dmitrikudrenko.kebab.ui.shop.KebebShopContract
+import io.github.dmitrikudrenko.kebab.ui.shop.KebabShopContract
 import io.github.dmitrikudrenko.kebab.ui.shop.presenter.KebabShopPresenterImpl
 import javax.inject.Singleton
 
@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class KebabShopModule {
     @Provides
     @Singleton
-    fun provideKebabShopPresenter(kebabShopDataController: IKebabShopDataController): KebebShopContract.KebabShopPresenter {
+    fun provideKebabShopPresenter(kebabShopDataController: IKebabShopDataController): KebabShopContract.KebabShopPresenter {
         return KebabShopPresenterImpl(kebabShopDataController)
     }
 }
